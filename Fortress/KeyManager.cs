@@ -10,30 +10,9 @@ namespace Fortress
 {
     class KeyManager
     {
-        private Dictionary<string ,Key> keys;
-
         public KeyManager()
         {
-            keys = new Dictionary<string, Key>();
-        }
 
-        public void AddKey(string name, Key key)
-        {
-            if (!keys.ContainsKey(name))
-            {
-                throw new Exception($"Key ({name}) not found!");
-            }
-
-            keys.Add(name, key);
-        }
-        public Key GetKey(string name)
-        {
-            if (!keys.ContainsKey(name))
-            {
-                throw new Exception($"Key ({name}) not found!");
-            }
-
-            return keys[name];
         }
 
         private void LoadAllKeys(string folder)
@@ -45,32 +24,20 @@ namespace Fortress
             }
         }
 
-        private void LoadKey(string path)
+        public Key LoadKey(string path)
         {
-            var name = Path.GetFileName(path);
-            if (!keys.ContainsKey(name))
-            {
-                throw new Exception($"A key with the name ({name}) was already loaded!");
-            }
-
             var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             var formatter = new BinaryFormatter();
             var key = (Key)formatter.Deserialize(stream);
             stream.Close();
-
-            keys.Add(name, key);
+            return key;
         }
 
-        private void SaveKey(string path, string key)
+        public void SaveKey(string path, Key key)
         {
-            if (!keys.ContainsKey(key))
-            {
-                throw new Exception($"No keys matched the name ({key})!");
-            }
-
             var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
             var formatter = new BinaryFormatter();
-            formatter.Serialize(stream, keys[key]);
+            formatter.Serialize(stream, key);
             stream.Close();
         }
     }

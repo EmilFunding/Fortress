@@ -16,7 +16,7 @@ namespace Fortress
             rngCsp = new RNGCryptoServiceProvider();
         }
 
-        private Key CreateAESKey()
+        public Key CreateAESKey()
         {
             var aes = new AesCryptoServiceProvider();
             aes.KeySize = 128;
@@ -24,14 +24,14 @@ namespace Fortress
             return new Key(KeyType.Aes, aes.Key);
         }
 
-        private Tuple<Key, Key> CreateRSAKey()
+        public Tuple<Key, Key> CreateRSAKey()
         {
             var rsa = new RSACryptoServiceProvider();
             rsa.KeySize = 4096;
             return Tuple.Create(new Key(KeyType.RsaPublic, rsa.ExportCspBlob(false)), new Key(KeyType.RsaPrivate, rsa.ExportCspBlob(true)));
         }
 
-        private Key CreateOTPKey(long size)
+        public Key CreateOTPKey(long size)
         {
             var keyBytes = new byte[size];
             rngCsp.GetBytes(keyBytes);

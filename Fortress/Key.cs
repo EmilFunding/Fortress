@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace Fortress
 {
-    enum KeyType
+    public enum KeyType
     {
         Aes,
         RsaPublic,
@@ -15,7 +15,7 @@ namespace Fortress
         Otp,
     }
 
-    class Key
+    public class Key
     {
         public KeyType Type { get; set; }
         public byte[] KeyBytes { get; set; }
