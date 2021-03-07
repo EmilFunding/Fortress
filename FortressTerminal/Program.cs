@@ -13,9 +13,14 @@ namespace FortressTerminal
         {
             var fortress = new FortressCore();
 
-            fortress.CreateKey(Environment.CurrentDirectory + @"key.bin", KeyType.Aes);
+            var currentDir = Environment.CurrentDirectory;
+            fortress.CreateKey(currentDir + @"\key.bin", KeyType.Aes);
 
+            fortress.Pack(currentDir + @"\test.txt", currentDir + @"\test_encrypted.bin", currentDir + @"\key.bin");
 
+            fortress.Unpack(currentDir + @"\test_encrypted.bin", currentDir + @"\test_original.txt", currentDir + @"\key.bin");
+
+            Console.WriteLine("Done");
         }
     }
 }

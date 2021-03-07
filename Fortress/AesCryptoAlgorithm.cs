@@ -10,32 +10,56 @@ namespace Fortress
 {
     class AesCryptoAlgorithm : ICryptoAlgorithm
     {
+
+        private Tuple<byte[], byte[]> SplitKey(Key key)
+        {
+            string keyString = Encoding.UTF8.GetString(key.KeyBytes);
+            var split = keyString.Split(',');
+            return Tuple.Create(Convert.FromBase64String(split[0]), Convert.FromBase64String(split[1]));
+        }
+
         public byte[] Encrypt(byte[] plain, Key key)
         {
             var aes = new AesManaged();
-            aes.Key = key.KeyBytes;
-            aes.GenerateIV();
 
-            var cryptoTransform = aes.CreateEncryptor(aes.Key, aes.IV);
-            var msEncrypt = new MemoryStream();
-            var csEncrypt = new CryptoStream(msEncrypt, cryptoTransform, CryptoStreamMode.Write);
-            csEncrypt.Write(plain, 0, plain.Length);
+            var splitKey = SplitKey(key);
+            aes.Key = splitKey.Item1;
+            aes.IV = splitKey.Item2;
 
-            return msEncrypt.ToArray();
+            byte[] cipher = null;
+            using (var msEncrypt = new MemoryStream())
+            {
+                using (var csEncrypt = new CryptoStream(msEncrypt, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    csEncrypt.Write(plain, 0, plain.Length);
+                }
+
+                cipher = msEncrypt.ToArray();
+            }
+
+            return cipher;
         }
 
         public byte[] Decrypt(byte[] cipher, Key key)
         {
             var aes = new AesManaged();
-            aes.Key = key.KeyBytes;
-            aes.GenerateIV();
 
-            var cryptoTransform = aes.CreateDecryptor(aes.Key, aes.IV);
-            var msDecrypt = new MemoryStream();
-            var csDecrypt = new CryptoStream(msDecrypt, cryptoTransform, CryptoStreamMode.Read);
-            csDecrypt.Write(cipher, 0, cipher.Length);
+            var splitKey = SplitKey(key);
+            aes.Key = splitKey.Item1;
+            aes.IV = splitKey.Item2;
 
-            return msDecrypt.ToArray();
+            byte[] plain = null;
+            using (var msDecrypt = new MemoryStream())
+            {
+                using (var csDecrypt = new CryptoStream(msDecrypt, aes.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    csDecrypt.Write(cipher, 0, cipher.Length);
+                }
+
+                plain = msDecrypt.ToArray();
+            }
+
+            return plain;
         }
     }
 }

@@ -21,7 +21,11 @@ namespace Fortress
             var aes = new AesCryptoServiceProvider();
             aes.KeySize = 128;
             aes.GenerateKey();
-            return new Key(KeyType.Aes, aes.Key);
+            aes.GenerateIV();
+
+            string keyString = $"{Convert.ToBase64String(aes.Key)},{Convert.ToBase64String(aes.IV)}";
+
+            return new Key(KeyType.Aes, Encoding.UTF8.GetBytes(keyString));
         }
 
         public Tuple<Key, Key> CreateRSAKey()

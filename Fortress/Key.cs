@@ -15,6 +15,7 @@ namespace Fortress
         Otp,
     }
 
+    [Serializable]
     public class Key
     {
         public KeyType Type { get; set; }
