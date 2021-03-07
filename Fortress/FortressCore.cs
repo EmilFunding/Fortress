@@ -20,6 +20,7 @@ namespace Fortress
 
             cryptoAlgorithm = new Dictionary<KeyType, ICryptoAlgorithm>();
             cryptoAlgorithm.Add(KeyType.Aes, new AesCryptoAlgorithm());
+            cryptoAlgorithm.Add(KeyType.Otp, new OtpCryptoAlgorithm());
         }
 
         public void Pack(string path, string output, string key_)
@@ -36,7 +37,7 @@ namespace Fortress
             File.WriteAllBytes(output, cryptoAlgorithm[key.Type].Decrypt(cipher, key));
         }
 
-        public void CreateKey(string path, KeyType keyType)
+        public void CreateKey(string path, KeyType keyType, long size)
         {
             switch (keyType)
             {
@@ -48,6 +49,7 @@ namespace Fortress
 
                     break;
                 case KeyType.Otp:
+                    keyManager.SaveKey(path, keyGenerator.CreateOTPKey(size));
                     break;
             }
         }
