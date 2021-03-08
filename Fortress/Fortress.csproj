@@ -49,6 +49,7 @@
     <Compile Include="KeyManager.cs" />
     <Compile Include="OtpCryptoAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RsaCryptoAlgorithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

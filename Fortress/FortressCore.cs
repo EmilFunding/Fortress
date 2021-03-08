@@ -21,6 +21,10 @@ namespace Fortress
             cryptoAlgorithm = new Dictionary<KeyType, ICryptoAlgorithm>();
             cryptoAlgorithm.Add(KeyType.Aes, new AesCryptoAlgorithm());
             cryptoAlgorithm.Add(KeyType.Otp, new OtpCryptoAlgorithm());
+
+            var rsa = new RsaCryptoAlgorithm();
+            cryptoAlgorithm.Add(KeyType.RsaPublic, rsa);
+            cryptoAlgorithm.Add(KeyType.RsaPrivate, rsa);
         }
 
         public void Pack(string path, string output, string key_)
@@ -37,21 +41,21 @@ namespace Fortress
             File.WriteAllBytes(output, cryptoAlgorithm[key.Type].Decrypt(cipher, key));
         }
 
-        public void CreateKey(string path, KeyType keyType, long size)
+        public void CreateAESKey(string path)
         {
-            switch (keyType)
-            {
-                case KeyType.Aes:
-                    keyManager.SaveKey(path, keyGenerator.CreateAESKey());
-                    break;
-                case KeyType.RsaPublic:
-                case KeyType.RsaPrivate:
+            keyManager.SaveKey(path, keyGenerator.CreateAESKey());
+        }
 
-                    break;
-                case KeyType.Otp:
-                    keyManager.SaveKey(path, keyGenerator.CreateOTPKey(size));
-                    break;
-            }
+        public void CreateOTPKey(string path, long size)
+        {
+            keyManager.SaveKey(path, keyGenerator.CreateOTPKey(size));
+        }
+
+        public void CreateRSAKey(string publicPath, string privatePath)
+        {
+            var rsaKey = keyGenerator.CreateRSAKey();
+            keyManager.SaveKey(publicPath, rsaKey.Item1);
+            keyManager.SaveKey(privatePath, rsaKey.Item2);
         }
     }
 }
