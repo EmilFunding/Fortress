@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,26 @@ namespace Fortress
             var rsa = new RsaCryptoAlgorithm();
             cryptoAlgorithm.Add(KeyType.RsaPublic, rsa);
             cryptoAlgorithm.Add(KeyType.RsaPrivate, rsa);
+        }
+
+        public void PackFast(string path, string password)
+        {
+            var sha = SHA256.Create();
+            var hash = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite))
+            {
+                stream.Position = 0;
+
+                var filebytes = new byte[32];
+                int count = stream.Read(filebytes, 0, filebytes.Length);
+                for (int i = 0; i < count; i++)
+                    filebytes[i] ^= hash[i];
+
+                stream.Position = 0;
+                stream.Write(filebytes, 0, count);
+            }
+
         }
 
         public void Pack(string path, string output, string key_)

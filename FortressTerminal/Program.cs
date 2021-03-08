@@ -24,9 +24,11 @@ namespace FortressTerminal
             //fortress.Pack(currentDir + @"\test.txt", currentDir + @"\otp_test_encrypted.bin", currentDir + @"\otp_key.bin");
             //fortress.Unpack(currentDir + @"\otp_test_encrypted.bin", currentDir + @"\otp_test_original.txt", currentDir + @"\otp_key.bin");
 
-            fortress.CreateRSAKey(currentDir + @"\rsa_pub_key.bin", currentDir + @"\rsa_pri_key.bin");
-            fortress.Pack(currentDir + @"\test.txt", currentDir + @"\rsa_test_encrypted.bin", currentDir + @"\rsa_pub_key.bin");
-            fortress.Unpack(currentDir + @"\rsa_test_encrypted.bin", currentDir + @"\rsa_test_original.txt", currentDir + @"\rsa_pri_key.bin");
+            //fortress.CreateRSAKey(currentDir + @"\rsa_pub_key.bin", currentDir + @"\rsa_pri_key.bin");
+            //fortress.Pack(currentDir + @"\test.txt", currentDir + @"\rsa_test_encrypted.bin", currentDir + @"\rsa_pub_key.bin");
+            //fortress.Unpack(currentDir + @"\rsa_test_encrypted.bin", currentDir + @"\rsa_test_original.txt", currentDir + @"\rsa_pri_key.bin");
+
+            //fortress.PackFast(currentDir + @"\image.png", "test");
 
             Console.WriteLine("Done");
         }
