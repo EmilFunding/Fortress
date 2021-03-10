@@ -15,9 +15,9 @@ namespace FortressTerminal
             var fortress = new FortressCore();
 
             var currentDir = Environment.CurrentDirectory;
-            //fortress.CreateAESKey(currentDir + @"\aes_key.bin");
-            //fortress.Pack(currentDir + @"\test.txt", currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_key.bin");
-            //fortress.Unpack(currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_test_original.txt", currentDir + @"\aes_key.bin");
+            fortress.CreateAESKey(currentDir + @"\aes_key.bin");
+            fortress.Pack(currentDir + @"\test.txt", currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_key.bin");
+            fortress.Unpack(currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_test_original.txt", currentDir + @"\aes_key.bin");
 
             //var fileInfo = new FileInfo(currentDir + @"\test.txt");
             //fortress.CreateOTPKey(currentDir + @"\otp_key.bin", fileInfo.Length);

@@ -48,6 +48,7 @@
     <Compile Include="Keys\KeyGenerator.cs" />
     <Compile Include="Keys\KeyManager.cs" />
     <Compile Include="Algorithms\OtpCryptoAlgorithm.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Algorithms\RsaCryptoAlgorithm.cs" />
   </ItemGroup>
