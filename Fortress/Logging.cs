@@ -18,7 +18,8 @@ namespace Fortress
 
     public class Logging
     {
-        FileStream stream;
+        private FileStream stream;
+        private bool enableLogging;
 
         public Logging()
         {
@@ -32,48 +33,32 @@ namespace Fortress
             }
         }
 
-        private void Log(string text)
+        private void SetEnableLogging(bool enabled)
+        {
+            enableLogging = enabled;
+        }
+
+        private void WriteToLog(string text)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(text + '\n');
             stream.Write(bytes, 0, bytes.Length);
+        }
+
+        public void Log(string function, params string[] parameters)
+        {
+            string final = function;
+
+            foreach (var param in parameters)
+            {
+                final += $"\"{param}\"";
+            }
+
+            WriteToLog(final);
         }
 
         public void CloseStream()
         {
             stream.Close();
         }
-
-        public void PackFast(string path, string password)
-        {
-            var sha = SHA256.Create();
-            Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(password)));
-            Log($"PackFast \"{path}\" \"{Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(password)))}\"");
-        }
-
-        public void Pack(string path, string output, string key_)
-        {
-            Log($"Pack \"{path}\" \"{output}\" \"{key_}\"");
-        }
-
-        public void Unpack(string path, string output, string key_)
-        {
-            Log($"Unpack \"{path}\" \"{output}\" \"{key_}\"");
-        }
-
-        public void CreateAESKey(string path)
-        {
-            Log($"CreateAESKey \"{path}\"");
-        }
-
-        public void CreateOTPKey(string path, long size)
-        {
-            Log($"CreateOTPKey \"{path}\" \"{size}\" ");
-        }
-
-        public void CreateRSAKey(string publicPath, string privatePath)
-        {
-            Log($"CreateRSAKey \"{publicPath}\" \"{privatePath}\"");
-        }
-
     }
 }

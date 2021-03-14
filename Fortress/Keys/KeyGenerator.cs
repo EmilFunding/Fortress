@@ -16,6 +16,15 @@ namespace Fortress
             rngCsp = new RNGCryptoServiceProvider();
         }
 
+        public Key CreateAESKey(string password)
+        {
+            var deriveBytes = new Rfc2898DeriveBytes(Encoding.UTF8.GetBytes(password), new byte[] { 0x13, 0xe3, 0x68, 0x2f, 0x97, 0x64, 0xd2, 0x76 }, 32768);
+
+            string keyString = $"{Convert.ToBase64String(deriveBytes.GetBytes(16))},{Convert.ToBase64String(deriveBytes.GetBytes(16))}";
+
+            return new Key(KeyType.Aes, Encoding.UTF8.GetBytes(keyString));
+        }
+
         public Key CreateAESKey()
         {
             var aes = new AesCryptoServiceProvider();

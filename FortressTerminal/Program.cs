@@ -15,9 +15,9 @@ namespace FortressTerminal
             var fortress = new FortressCore();
 
             var currentDir = Environment.CurrentDirectory;
-            fortress.CreateAESKey(currentDir + @"\aes_key.bin");
-            fortress.Pack(currentDir + @"\test.txt", currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_key.bin");
-            fortress.Unpack(currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_test_original.txt", currentDir + @"\aes_key.bin");
+            //fortress.CreateAESKey(currentDir + @"\aes_key.bin");
+            //fortress.Pack(currentDir + @"\test.txt", currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_key.bin");
+            //fortress.Unpack(currentDir + @"\aes_test_encrypted.bin", currentDir + @"\aes_test_original.txt", currentDir + @"\aes_key.bin");
 
             //var fileInfo = new FileInfo(currentDir + @"\test.txt");
             //fortress.CreateOTPKey(currentDir + @"\otp_key.bin", fileInfo.Length);
@@ -29,6 +29,9 @@ namespace FortressTerminal
             //fortress.Unpack(currentDir + @"\rsa_test_encrypted.bin", currentDir + @"\rsa_test_original.txt", currentDir + @"\rsa_pri_key.bin");
 
             //fortress.PackFast(currentDir + @"\image.png", "test");
+
+            fortress.PackAES(currentDir + @"\image.png", currentDir + @"\packaes_image_encrypted.png", "12345");
+            fortress.UnpackAES(currentDir + @"\packaes_image_encrypted.png", currentDir + @"\packaes_image_original.png", "12345");
 
             Console.WriteLine("Done");
         }
